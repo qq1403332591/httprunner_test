@@ -6,14 +6,14 @@ from httprunner import HttpRunner, Config, Step, RunRequest, RunTestCase
 
 
 class TestCaseMubu(HttpRunner):
-
-    config = Config("testcase description").verify(False)
+    config = Config("testcase description").verify(False).variables(
+        **{"data_unique_id": "2b7540fa-9d38-4f6f-9bae-9096fb781618"})  # 定义全局环境变量
 
     teststeps = [
         Step(
             RunRequest("/login")
-            .get("https://mubu.com/login")
-            .with_headers(
+                .get("https://mubu.com/login")
+                .with_headers(
                 **{
                     "sec-ch-ua": '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
                     "sec-ch-ua-mobile": "?0",
@@ -29,11 +29,11 @@ class TestCaseMubu(HttpRunner):
                     "accept-language": "zh-CN,zh;q=0.9",
                 }
             )
-            .with_cookies(
+                .with_cookies(
                 **{
                     "_ga": "GA1.2.2128988841.1608641787",
                     "use-redesign": "1",
-                    "data_unique_id": "2b7540fa-9d38-4f6f-9bae-9096fb781618",
+                    "data_unique_id": "$data_unique_id",
                     "reg_entrance": "https%3A%2F%2Fmubu.com%2F",
                     "_gid": "GA1.2.1940696041.1617714709",
                     "csrf_token": "6bc93b86-9e1f-4e14-b1ee-ce4ea52b9d20",
@@ -48,13 +48,13 @@ class TestCaseMubu(HttpRunner):
                     "Hm_lpvt_4426cbb0486a79ea049b4ad52d81b504": "1617767662",
                 }
             )
-            .validate()
-            .assert_equal("status_code", 200)
+                .validate()
+                .assert_equal("status_code", 200)
         ),
         Step(
             RunRequest("/login/password")
-            .get("https://mubu.com/login/password")
-            .with_headers(
+                .get("https://mubu.com/login/password")
+                .with_headers(
                 **{
                     "sec-ch-ua": '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
                     "sec-ch-ua-mobile": "?0",
@@ -70,11 +70,11 @@ class TestCaseMubu(HttpRunner):
                     "accept-language": "zh-CN,zh;q=0.9",
                 }
             )
-            .with_cookies(
+                .with_cookies(
                 **{
                     "_ga": "GA1.2.2128988841.1608641787",
                     "use-redesign": "1",
-                    "data_unique_id": "2b7540fa-9d38-4f6f-9bae-9096fb781618",
+                    "data_unique_id": "$data_unique_id",
                     "reg_entrance": "https%3A%2F%2Fmubu.com%2F",
                     "_gid": "GA1.2.1940696041.1617714709",
                     "csrf_token": "6bc93b86-9e1f-4e14-b1ee-ce4ea52b9d20",
@@ -89,13 +89,13 @@ class TestCaseMubu(HttpRunner):
                     "reg_prepareId": "178aa77aacd-178aa779c56-4609-b606-8cbf8ca984a3",
                 }
             )
-            .validate()
-            .assert_equal("status_code", 200)
+                .validate()
+                .assert_equal("status_code", 200)
         ),
         Step(
             RunRequest("/api/login/submit")
-            .post("https://mubu.com/api/login/submit")
-            .with_headers(
+                .post("https://mubu.com/api/login/submit")
+                .with_headers(
                 **{
                     "content-length": "52",
                     "sec-ch-ua": '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
@@ -113,11 +113,11 @@ class TestCaseMubu(HttpRunner):
                     "accept-language": "zh-CN,zh;q=0.9",
                 }
             )
-            .with_cookies(
+                .with_cookies(
                 **{
                     "_ga": "GA1.2.2128988841.1608641787",
                     "use-redesign": "1",
-                    "data_unique_id": "2b7540fa-9d38-4f6f-9bae-9096fb781618",
+                    "data_unique_id": "$data_unique_id",
                     "reg_entrance": "https%3A%2F%2Fmubu.com%2F",
                     "_gid": "GA1.2.1940696041.1617714709",
                     "csrf_token": "6bc93b86-9e1f-4e14-b1ee-ce4ea52b9d20",
@@ -132,18 +132,19 @@ class TestCaseMubu(HttpRunner):
                     "Hm_lpvt_4426cbb0486a79ea049b4ad52d81b504": "1617767674",
                 }
             )
-            .with_data(
+                .with_data(
                 {"phone": "13153117137", "password": "yaoyingdong", "remember": "true"}
             )
-            .validate()
-            .assert_equal("status_code", 200)
-            .assert_equal("body.code", 0)
-            .assert_equal("body.msg", None)
+                .validate()
+                .assert_equal("status_code", 200)
+                .assert_equal("body.code", 0)
+                .assert_equal("body.msg", None)
+                .assert_equal("body.data.next", "/app")  # 添加断言
         ),
         Step(
             RunRequest("/app")
-            .get("https://mubu.com/app")
-            .with_headers(
+                .get("https://mubu.com/app")
+                .with_headers(
                 **{
                     "sec-ch-ua": '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
                     "sec-ch-ua-mobile": "?0",
@@ -159,11 +160,11 @@ class TestCaseMubu(HttpRunner):
                     "accept-language": "zh-CN,zh;q=0.9",
                 }
             )
-            .with_cookies(
+                .with_cookies(
                 **{
                     "_ga": "GA1.2.2128988841.1608641787",
                     "use-redesign": "1",
-                    "data_unique_id": "2b7540fa-9d38-4f6f-9bae-9096fb781618",
+                    "data_unique_id": "$data_unique_id",
                     "reg_entrance": "https%3A%2F%2Fmubu.com%2F",
                     "_gid": "GA1.2.1940696041.1617714709",
                     "csrf_token": "6bc93b86-9e1f-4e14-b1ee-ce4ea52b9d20",
@@ -180,19 +181,19 @@ class TestCaseMubu(HttpRunner):
                     "user_persistence": "2d932be9-2c9c-40e2-89f7-d1eba197df5b",
                 }
             )
-            .validate()
-            .assert_equal("status_code", 200)
+                .validate()
+                .assert_equal("status_code", 200)
         ),
         Step(
             RunRequest("/v3/api/user/profile")
-            .post("https://api2.mubu.com/v3/api/user/profile")
-            .with_headers(
+                .post("https://api2.mubu.com/v3/api/user/profile")
+                .with_headers(
                 **{
                     "content-length": "0",
                     "sec-ch-ua": '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
                     "sec-ch-ua-mobile": "?0",
                     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36",
-                    "data-unique-id": "2b7540fa-9d38-4f6f-9bae-9096fb781618",
+                    "data-unique-id": "$data_unique_id",
                     "accept": "application/json, text/plain, */*",
                     "jwt-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhcHAiOiJtdWJ1Iiwic3ViIjoiMTAyOTQwNDQiLCJleHAiOjE2MjAzNTk2NzYsImlhdCI6MTYxNzc2NzY3Nn0.7E5eqv6XD3V3h36PrmgrnE-rucSL9f43aoratwAlnkmURVG64_swm2KrUNwdbHaNslbQb4sIB22DjVEW3pcYSg",
                     "x-request-id": "c6e682ec-dbee-4aa4-aadd-200ea035cf02",
@@ -206,21 +207,21 @@ class TestCaseMubu(HttpRunner):
                     "accept-language": "zh-CN,zh;q=0.9",
                 }
             )
-            .with_data("")
-            .validate()
-            .assert_equal("status_code", 200)
-            .assert_equal("body.code", 0)
+                .with_data("")
+                .validate()
+                .assert_equal("status_code", 200)
+                .assert_equal("body.code", 0)
         ),
         Step(
             RunRequest("/v3/api/list/item_count")
-            .post("https://api2.mubu.com/v3/api/list/item_count")
-            .with_headers(
+                .post("https://api2.mubu.com/v3/api/list/item_count")
+                .with_headers(
                 **{
                     "content-length": "30",
                     "sec-ch-ua": '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
                     "sec-ch-ua-mobile": "?0",
                     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36",
-                    "data-unique-id": "2b7540fa-9d38-4f6f-9bae-9096fb781618",
+                    "data-unique-id": "$data_unique_id",
                     "content-type": "application/json;charset=UTF-8",
                     "accept": "application/json, text/plain, */*",
                     "jwt-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhcHAiOiJtdWJ1Iiwic3ViIjoiMTAyOTQwNDQiLCJleHAiOjE2MjAzNTk2NzYsImlhdCI6MTYxNzc2NzY3Nn0.7E5eqv6XD3V3h36PrmgrnE-rucSL9f43aoratwAlnkmURVG64_swm2KrUNwdbHaNslbQb4sIB22DjVEW3pcYSg",
@@ -235,21 +236,21 @@ class TestCaseMubu(HttpRunner):
                     "accept-language": "zh-CN,zh;q=0.9",
                 }
             )
-            .with_json({"folderId": 0, "source": "home"})
-            .validate()
-            .assert_equal("status_code", 200)
-            .assert_equal("body.code", 0)
+                .with_json({"folderId": 0, "source": "home"})
+                .validate()
+                .assert_equal("status_code", 200)
+                .assert_equal("body.code", 0)
         ),
         Step(
             RunRequest("/v3/api/list/get")
-            .post("https://api2.mubu.com/v3/api/list/get")
-            .with_headers(
+                .post("https://api2.mubu.com/v3/api/list/get")
+                .with_headers(
                 **{
                     "content-length": "58",
                     "sec-ch-ua": '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
                     "sec-ch-ua-mobile": "?0",
                     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36",
-                    "data-unique-id": "2b7540fa-9d38-4f6f-9bae-9096fb781618",
+                    "data-unique-id": "$data_unique_id",
                     "content-type": "application/json;charset=UTF-8",
                     "accept": "application/json, text/plain, */*",
                     "jwt-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhcHAiOiJtdWJ1Iiwic3ViIjoiMTAyOTQwNDQiLCJleHAiOjE2MjAzNTk2NzYsImlhdCI6MTYxNzc2NzY3Nn0.7E5eqv6XD3V3h36PrmgrnE-rucSL9f43aoratwAlnkmURVG64_swm2KrUNwdbHaNslbQb4sIB22DjVEW3pcYSg",
@@ -264,22 +265,22 @@ class TestCaseMubu(HttpRunner):
                     "accept-language": "zh-CN,zh;q=0.9",
                 }
             )
-            .with_json(
+                .with_json(
                 {"folderId": 0, "sort": "time", "keywords": "", "source": "home"}
             )
-            .validate()
-            .assert_equal("status_code", 200)
-            .assert_equal("body.code", 0)
+                .validate()
+                .assert_equal("status_code", 200)
+                .assert_equal("body.code", 0)
         ),
         Step(
             RunRequest("/v3/api/list/star_relation/get")
-            .get("https://api2.mubu.com/v3/api/list/star_relation/get")
-            .with_headers(
+                .get("https://api2.mubu.com/v3/api/list/star_relation/get")
+                .with_headers(
                 **{
                     "sec-ch-ua": '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
                     "sec-ch-ua-mobile": "?0",
                     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36",
-                    "data-unique-id": "2b7540fa-9d38-4f6f-9bae-9096fb781618",
+                    "data-unique-id": "$data_unique_id",
                     "accept": "application/json, text/plain, */*",
                     "jwt-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhcHAiOiJtdWJ1Iiwic3ViIjoiMTAyOTQwNDQiLCJleHAiOjE2MjAzNTk2NzYsImlhdCI6MTYxNzc2NzY3Nn0.7E5eqv6XD3V3h36PrmgrnE-rucSL9f43aoratwAlnkmURVG64_swm2KrUNwdbHaNslbQb4sIB22DjVEW3pcYSg",
                     "x-request-id": "12129fa8-1c23-41cd-8012-e40c083ce5cc",
@@ -293,20 +294,20 @@ class TestCaseMubu(HttpRunner):
                     "accept-language": "zh-CN,zh;q=0.9",
                 }
             )
-            .validate()
-            .assert_equal("status_code", 200)
-            .assert_equal("body.code", 0)
+                .validate()
+                .assert_equal("status_code", 200)
+                .assert_equal("body.code", 0)
         ),
         Step(
             RunRequest("/v3/api/list/get_all_documents_page")
-            .post("https://api2.mubu.com/v3/api/list/get_all_documents_page")
-            .with_headers(
+                .post("https://api2.mubu.com/v3/api/list/get_all_documents_page")
+                .with_headers(
                 **{
                     "content-length": "12",
                     "sec-ch-ua": '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
                     "sec-ch-ua-mobile": "?0",
                     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36",
-                    "data-unique-id": "2b7540fa-9d38-4f6f-9bae-9096fb781618",
+                    "data-unique-id": "$data_unique_id",
                     "content-type": "application/json;charset=UTF-8",
                     "accept": "application/json, text/plain, */*",
                     "jwt-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhcHAiOiJtdWJ1Iiwic3ViIjoiMTAyOTQwNDQiLCJleHAiOjE2MjAzNTk2NzYsImlhdCI6MTYxNzc2NzY3Nn0.7E5eqv6XD3V3h36PrmgrnE-rucSL9f43aoratwAlnkmURVG64_swm2KrUNwdbHaNslbQb4sIB22DjVEW3pcYSg",
@@ -321,21 +322,22 @@ class TestCaseMubu(HttpRunner):
                     "accept-language": "zh-CN,zh;q=0.9",
                 }
             )
-            .with_json({"start": ""})
-            .validate()
-            .assert_equal("status_code", 200)
-            .assert_equal("body.code", 0)
+                .with_json({"start": ""})
+                .validate()
+                .assert_equal("status_code", 200)
+                .assert_equal("body.code", 0)
+
         ),
         Step(
             RunRequest("/v3/api/user/get_user_params")
-            .post("https://api2.mubu.com/v3/api/user/get_user_params")
-            .with_headers(
+                .post("https://api2.mubu.com/v3/api/user/get_user_params")
+                .with_headers(
                 **{
                     "content-length": "0",
                     "sec-ch-ua": '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
                     "sec-ch-ua-mobile": "?0",
                     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36",
-                    "data-unique-id": "2b7540fa-9d38-4f6f-9bae-9096fb781618",
+                    "data-unique-id": "$data_unique_id",
                     "accept": "application/json, text/plain, */*",
                     "jwt-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhcHAiOiJtdWJ1Iiwic3ViIjoiMTAyOTQwNDQiLCJleHAiOjE2MjAzNTk2NzYsImlhdCI6MTYxNzc2NzY3Nn0.7E5eqv6XD3V3h36PrmgrnE-rucSL9f43aoratwAlnkmURVG64_swm2KrUNwdbHaNslbQb4sIB22DjVEW3pcYSg",
                     "x-request-id": "a5edeb4d-b2dd-48c7-aa05-be65fd10ef4b",
@@ -349,21 +351,21 @@ class TestCaseMubu(HttpRunner):
                     "accept-language": "zh-CN,zh;q=0.9",
                 }
             )
-            .with_data("")
-            .validate()
-            .assert_equal("status_code", 200)
-            .assert_equal("body.code", 0)
+                .with_data("")
+                .validate()
+                .assert_equal("status_code", 200)
+                .assert_equal("body.code", 0)
         ),
         Step(
             RunRequest("/v3/api/list/item_count")
-            .post("https://api2.mubu.com/v3/api/list/item_count")
-            .with_headers(
+                .post("https://api2.mubu.com/v3/api/list/item_count")
+                .with_headers(
                 **{
                     "content-length": "30",
                     "sec-ch-ua": '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
                     "sec-ch-ua-mobile": "?0",
                     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36",
-                    "data-unique-id": "2b7540fa-9d38-4f6f-9bae-9096fb781618",
+                    "data-unique-id": "$data_unique_id",
                     "content-type": "application/json;charset=UTF-8",
                     "accept": "application/json, text/plain, */*",
                     "jwt-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhcHAiOiJtdWJ1Iiwic3ViIjoiMTAyOTQwNDQiLCJleHAiOjE2MjAzNTk2NzYsImlhdCI6MTYxNzc2NzY3Nn0.7E5eqv6XD3V3h36PrmgrnE-rucSL9f43aoratwAlnkmURVG64_swm2KrUNwdbHaNslbQb4sIB22DjVEW3pcYSg",
@@ -378,21 +380,21 @@ class TestCaseMubu(HttpRunner):
                     "accept-language": "zh-CN,zh;q=0.9",
                 }
             )
-            .with_json({"folderId": 0, "source": "home"})
-            .validate()
-            .assert_equal("status_code", 200)
-            .assert_equal("body.code", 0)
+                .with_json({"folderId": 0, "source": "home"})
+                .validate()
+                .assert_equal("status_code", 200)
+                .assert_equal("body.code", 0)
         ),
         Step(
             RunRequest("/v3/api/message/get_message_unread")
-            .post("https://api2.mubu.com/v3/api/message/get_message_unread")
-            .with_headers(
+                .post("https://api2.mubu.com/v3/api/message/get_message_unread")
+                .with_headers(
                 **{
                     "content-length": "10",
                     "sec-ch-ua": '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
                     "sec-ch-ua-mobile": "?0",
                     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36",
-                    "data-unique-id": "2b7540fa-9d38-4f6f-9bae-9096fb781618",
+                    "data-unique-id": "$data_unique_id",
                     "content-type": "application/json;charset=UTF-8",
                     "accept": "application/json, text/plain, */*",
                     "jwt-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhcHAiOiJtdWJ1Iiwic3ViIjoiMTAyOTQwNDQiLCJleHAiOjE2MjAzNTk2NzYsImlhdCI6MTYxNzc2NzY3Nn0.7E5eqv6XD3V3h36PrmgrnE-rucSL9f43aoratwAlnkmURVG64_swm2KrUNwdbHaNslbQb4sIB22DjVEW3pcYSg",
@@ -407,21 +409,21 @@ class TestCaseMubu(HttpRunner):
                     "accept-language": "zh-CN,zh;q=0.9",
                 }
             )
-            .with_json({"page": 1})
-            .validate()
-            .assert_equal("status_code", 200)
-            .assert_equal("body.code", 0)
+                .with_json({"page": 1})
+                .validate()
+                .assert_equal("status_code", 200)
+                .assert_equal("body.code", 0)
         ),
         Step(
             RunRequest("/v3/api/list/create_folder")
-            .post("https://api2.mubu.com/v3/api/list/create_folder")
-            .with_headers(
+                .post("https://api2.mubu.com/v3/api/list/create_folder")
+                .with_headers(
                 **{
                     "content-length": "39",
                     "sec-ch-ua": '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
                     "sec-ch-ua-mobile": "?0",
                     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36",
-                    "data-unique-id": "2b7540fa-9d38-4f6f-9bae-9096fb781618",
+                    "data-unique-id": "$data_unique_id",
                     "content-type": "application/json;charset=UTF-8",
                     "accept": "application/json, text/plain, */*",
                     "jwt-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhcHAiOiJtdWJ1Iiwic3ViIjoiMTAyOTQwNDQiLCJleHAiOjE2MjAzNTk2NzYsImlhdCI6MTYxNzc2NzY3Nn0.7E5eqv6XD3V3h36PrmgrnE-rucSL9f43aoratwAlnkmURVG64_swm2KrUNwdbHaNslbQb4sIB22DjVEW3pcYSg",
@@ -436,23 +438,23 @@ class TestCaseMubu(HttpRunner):
                     "accept-language": "zh-CN,zh;q=0.9",
                 }
             )
-            .with_json({"name": "hogwarts_demo", "folderId": "0"})
-            .extract()
-            .with_jmespath('body.data.folder.id',  'folderId')
-            .validate()
-            .assert_equal("status_code", 200)
-            .assert_equal("body.code", 0)
+                .with_json({"name": "hogwarts_demo", "folderId": "0"})
+                .extract()  # 另外加的
+                .with_jmespath('body.data.folder.id', 'folderId')  # 另外加的
+                .validate()
+                .assert_equal("status_code", 200)
+                .assert_equal("body.code", 0)
         ),
         Step(
             RunRequest("/v3/api/list/item_count")
-            .post("https://api2.mubu.com/v3/api/list/item_count")
-            .with_headers(
+                .post("https://api2.mubu.com/v3/api/list/item_count")
+                .with_headers(
                 **{
                     "content-length": "41",
                     "sec-ch-ua": '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
                     "sec-ch-ua-mobile": "?0",
                     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36",
-                    "data-unique-id": "2b7540fa-9d38-4f6f-9bae-9096fb781618",
+                    "data-unique-id": "$data_unique_id",
                     "content-type": "application/json;charset=UTF-8",
                     "accept": "application/json, text/plain, */*",
                     "jwt-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhcHAiOiJtdWJ1Iiwic3ViIjoiMTAyOTQwNDQiLCJleHAiOjE2MjAzNTk2NzYsImlhdCI6MTYxNzc2NzY3Nn0.7E5eqv6XD3V3h36PrmgrnE-rucSL9f43aoratwAlnkmURVG64_swm2KrUNwdbHaNslbQb4sIB22DjVEW3pcYSg",
@@ -467,21 +469,21 @@ class TestCaseMubu(HttpRunner):
                     "accept-language": "zh-CN,zh;q=0.9",
                 }
             )
-            .with_json({"folderId": "$folderId", "source": "home"})
-            .validate()
-            .assert_equal("status_code", 200)
-            .assert_equal("body.code", 0)
+                .with_json({"folderId": "$folderId", "source": "home"})
+                .validate()
+                .assert_equal("status_code", 200)
+                .assert_equal("body.code", 0)
         ),
         Step(
             RunRequest("/v3/api/list/create_doc")
-            .post("https://api2.mubu.com/v3/api/list/create_doc")
-            .with_headers(
+                .post("https://api2.mubu.com/v3/api/list/create_doc")
+                .with_headers(
                 **{
                     "content-length": "34",
                     "sec-ch-ua": '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
                     "sec-ch-ua-mobile": "?0",
                     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36",
-                    "data-unique-id": "2b7540fa-9d38-4f6f-9bae-9096fb781618",
+                    "data-unique-id": "$data_unique_id",
                     "content-type": "application/json;charset=UTF-8",
                     "accept": "application/json, text/plain, */*",
                     "jwt-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhcHAiOiJtdWJ1Iiwic3ViIjoiMTAyOTQwNDQiLCJleHAiOjE2MjAzNTk2NzYsImlhdCI6MTYxNzc2NzY3Nn0.7E5eqv6XD3V3h36PrmgrnE-rucSL9f43aoratwAlnkmURVG64_swm2KrUNwdbHaNslbQb4sIB22DjVEW3pcYSg",
@@ -496,23 +498,23 @@ class TestCaseMubu(HttpRunner):
                     "accept-language": "zh-CN,zh;q=0.9",
                 }
             )
-            .with_json({"folderId": "$folderId", "type": 0})
-            .extract()
-            .with_jmespath('body.data.id',  'docId')
-            .validate()
-            .assert_equal("status_code", 200)
-            .assert_equal("body.code", 0)
+                .with_json({"folderId": "$folderId", "type": 0})
+                .extract()
+                .with_jmespath('body.data.id', 'docId')
+                .validate()
+                .assert_equal("status_code", 200)
+                .assert_equal("body.code", 0)
         ),
         Step(
             RunRequest("/v3/api/list/item_count")
-            .post("https://api2.mubu.com/v3/api/list/item_count")
-            .with_headers(
+                .post("https://api2.mubu.com/v3/api/list/item_count")
+                .with_headers(
                 **{
                     "content-length": "30",
                     "sec-ch-ua": '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
                     "sec-ch-ua-mobile": "?0",
                     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36",
-                    "data-unique-id": "2b7540fa-9d38-4f6f-9bae-9096fb781618",
+                    "data-unique-id": "$data_unique_id",
                     "content-type": "application/json;charset=UTF-8",
                     "accept": "application/json, text/plain, */*",
                     "jwt-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhcHAiOiJtdWJ1Iiwic3ViIjoiMTAyOTQwNDQiLCJleHAiOjE2MjAzNTk2NzYsImlhdCI6MTYxNzc2NzY3Nn0.7E5eqv6XD3V3h36PrmgrnE-rucSL9f43aoratwAlnkmURVG64_swm2KrUNwdbHaNslbQb4sIB22DjVEW3pcYSg",
@@ -527,21 +529,21 @@ class TestCaseMubu(HttpRunner):
                     "accept-language": "zh-CN,zh;q=0.9",
                 }
             )
-            .with_json({"folderId": 0, "source": "home"})
-            .validate()
-            .assert_equal("status_code", 200)
-            .assert_equal("body.code", 0)
+                .with_json({"folderId": 0, "source": "home"})
+                .validate()
+                .assert_equal("status_code", 200)
+                .assert_equal("body.code", 0)
         ),
         Step(
             RunRequest("/v3/api/user/current_level")
-            .post("https://api2.mubu.com/v3/api/user/current_level")
-            .with_headers(
+                .post("https://api2.mubu.com/v3/api/user/current_level")
+                .with_headers(
                 **{
                     "content-length": "28",
                     "sec-ch-ua": '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
                     "sec-ch-ua-mobile": "?0",
                     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36",
-                    "data-unique-id": "2b7540fa-9d38-4f6f-9bae-9096fb781618",
+                    "data-unique-id": "$data_unique_id",
                     "content-type": "application/json;charset=UTF-8",
                     "accept": "application/json, text/plain, */*",
                     "jwt-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhcHAiOiJtdWJ1Iiwic3ViIjoiMTAyOTQwNDQiLCJleHAiOjE2MjAzNTk2NzYsImlhdCI6MTYxNzc2NzY3Nn0.7E5eqv6XD3V3h36PrmgrnE-rucSL9f43aoratwAlnkmURVG64_swm2KrUNwdbHaNslbQb4sIB22DjVEW3pcYSg",
@@ -556,21 +558,21 @@ class TestCaseMubu(HttpRunner):
                     "accept-language": "zh-CN,zh;q=0.9",
                 }
             )
-            .with_json({"document_id": "$docId"})
-            .validate()
-            .assert_equal("status_code", 200)
-            .assert_equal("body.code", 0)
+                .with_json({"document_id": "$docId"})
+                .validate()
+                .assert_equal("status_code", 200)
+                .assert_equal("body.code", 0)
         ),
         Step(
             RunRequest("/v3/api/document/edit/get")
-            .post("https://api2.mubu.com/v3/api/document/edit/get")
-            .with_headers(
+                .post("https://api2.mubu.com/v3/api/document/edit/get")
+                .with_headers(
                 **{
                     "content-length": "36",
                     "sec-ch-ua": '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
                     "sec-ch-ua-mobile": "?0",
                     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36",
-                    "data-unique-id": "2b7540fa-9d38-4f6f-9bae-9096fb781618",
+                    "data-unique-id": "$data_unique_id",
                     "content-type": "application/json;charset=UTF-8",
                     "accept": "application/json, text/plain, */*",
                     "jwt-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhcHAiOiJtdWJ1Iiwic3ViIjoiMTAyOTQwNDQiLCJleHAiOjE2MjAzNTk2NzYsImlhdCI6MTYxNzc2NzY3Nn0.7E5eqv6XD3V3h36PrmgrnE-rucSL9f43aoratwAlnkmURVG64_swm2KrUNwdbHaNslbQb4sIB22DjVEW3pcYSg",
@@ -585,21 +587,21 @@ class TestCaseMubu(HttpRunner):
                     "accept-language": "zh-CN,zh;q=0.9",
                 }
             )
-            .with_json({"docId": "$docId", "password": ""})
-            .validate()
-            .assert_equal("status_code", 200)
-            .assert_equal("body.code", 0)
+                .with_json({"docId": "$docId", "password": ""})
+                .validate()
+                .assert_equal("status_code", 200)
+                .assert_equal("body.code", 0)
         ),
         Step(
             RunRequest("/v3/api/refer/doc/list")
-            .post("https://api2.mubu.com/v3/api/refer/doc/list")
-            .with_headers(
+                .post("https://api2.mubu.com/v3/api/refer/doc/list")
+                .with_headers(
                 **{
                     "content-length": "28",
                     "sec-ch-ua": '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
                     "sec-ch-ua-mobile": "?0",
                     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36",
-                    "data-unique-id": "2b7540fa-9d38-4f6f-9bae-9096fb781618",
+                    "data-unique-id": "$data_unique_id",
                     "content-type": "application/json;charset=UTF-8",
                     "accept": "application/json, text/plain, */*",
                     "jwt-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhcHAiOiJtdWJ1Iiwic3ViIjoiMTAyOTQwNDQiLCJleHAiOjE2MjAzNTk2NzYsImlhdCI6MTYxNzc2NzY3Nn0.7E5eqv6XD3V3h36PrmgrnE-rucSL9f43aoratwAlnkmURVG64_swm2KrUNwdbHaNslbQb4sIB22DjVEW3pcYSg",
@@ -613,22 +615,22 @@ class TestCaseMubu(HttpRunner):
                     "accept-language": "zh-CN,zh;q=0.9",
                 }
             )
-            .with_json({"targetDocId": "$docId"})
-            .validate()
-            .assert_equal("status_code", 200)
-            .assert_equal("body.code", 0)
+                .with_json({"targetDocId": "$docId"})
+                .validate()
+                .assert_equal("status_code", 200)
+                .assert_equal("body.code", 0)
         ),
         Step(
             RunRequest("/v3/api/colla/register")
-            .get("https://api2.mubu.com/v3/api/colla/register")
-            .with_headers(
+                .get("https://api2.mubu.com/v3/api/colla/register")
+                .with_headers(
                 **{
                     "sec-ch-ua": '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
                     "accept": "application/json, text/plain, */*",
                     "jwt-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhcHAiOiJtdWJ1Iiwic3ViIjoiMTAyOTQwNDQiLCJleHAiOjE2MjAzNTk2NzYsImlhdCI6MTYxNzc2NzY3Nn0.7E5eqv6XD3V3h36PrmgrnE-rucSL9f43aoratwAlnkmURVG64_swm2KrUNwdbHaNslbQb4sIB22DjVEW3pcYSg",
                     "sec-ch-ua-mobile": "?0",
                     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36",
-                    "data-unique-id": "2b7540fa-9d38-4f6f-9bae-9096fb781618",
+                    "data-unique-id": "$data_unique_id",
                     "x-request-id": "a9420dbd-f350-49fe-8fac-a58d33ffd057",
                     "origin": "https://mubu.com",
                     "sec-fetch-site": "same-site",
@@ -639,20 +641,20 @@ class TestCaseMubu(HttpRunner):
                     "accept-language": "zh-CN,zh;q=0.9",
                 }
             )
-            .validate()
-            .assert_equal("status_code", 200)
-            .assert_equal("body.code", 0)
+                .validate()
+                .assert_equal("status_code", 200)
+                .assert_equal("body.code", 0)
         ),
         Step(
             RunRequest("/v3/api/refer/node/count")
-            .post("https://api2.mubu.com/v3/api/refer/node/count")
-            .with_headers(
+                .post("https://api2.mubu.com/v3/api/refer/node/count")
+                .with_headers(
                 **{
                     "content-length": "28",
                     "sec-ch-ua": '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
                     "sec-ch-ua-mobile": "?0",
                     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36",
-                    "data-unique-id": "2b7540fa-9d38-4f6f-9bae-9096fb781618",
+                    "data-unique-id": "$data_unique_id",
                     "content-type": "application/json;charset=UTF-8",
                     "accept": "application/json, text/plain, */*",
                     "jwt-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhcHAiOiJtdWJ1Iiwic3ViIjoiMTAyOTQwNDQiLCJleHAiOjE2MjAzNTk2NzYsImlhdCI6MTYxNzc2NzY3Nn0.7E5eqv6XD3V3h36PrmgrnE-rucSL9f43aoratwAlnkmURVG64_swm2KrUNwdbHaNslbQb4sIB22DjVEW3pcYSg",
@@ -667,16 +669,16 @@ class TestCaseMubu(HttpRunner):
                     "accept-language": "zh-CN,zh;q=0.9",
                 }
             )
-            .with_json({"targetDocId": "$docId"})
-            .validate()
-            .assert_equal("status_code", 200)
-            .assert_equal("body.code", 0)
+                .with_json({"targetDocId": "$docId"})
+                .validate()
+                .assert_equal("status_code", 200)
+                .assert_equal("body.code", 0)
         ),
         Step(
             RunRequest("/v3/api/colla/members")
-            .options("https://api2.mubu.com/v3/api/colla/members")
-            .with_params(**{"memberId": "5990846188234224", "documentId": "$docId"})
-            .with_headers(
+                .options("https://api2.mubu.com/v3/api/colla/members")
+                .with_params(**{"memberId": "5990846188234224", "documentId": "$docId"})
+                .with_headers(
                 **{
                     "accept": "*/*",
                     "access-control-request-method": "GET",
@@ -691,19 +693,19 @@ class TestCaseMubu(HttpRunner):
                     "accept-language": "zh-CN,zh;q=0.9",
                 }
             )
-            .validate()
-            .assert_equal("status_code", 200)
+                .validate()
+                .assert_equal("status_code", 200)
         ),
         Step(
             RunRequest("/v3/api/colla/members")
-            .get("https://api2.mubu.com/v3/api/colla/members")
-            .with_params(**{"memberId": "5990846188234224", "documentId": "$docId"})
-            .with_headers(
+                .get("https://api2.mubu.com/v3/api/colla/members")
+                .with_params(**{"memberId": "5990846188234224", "documentId": "$docId"})
+                .with_headers(
                 **{
                     "sec-ch-ua": '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
                     "sec-ch-ua-mobile": "?0",
                     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36",
-                    "data-unique-id": "2b7540fa-9d38-4f6f-9bae-9096fb781618",
+                    "data-unique-id": "$data_unique_id",
                     "accept": "application/json, text/plain, */*",
                     "jwt-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhcHAiOiJtdWJ1Iiwic3ViIjoiMTAyOTQwNDQiLCJleHAiOjE2MjAzNTk2NzYsImlhdCI6MTYxNzc2NzY3Nn0.7E5eqv6XD3V3h36PrmgrnE-rucSL9f43aoratwAlnkmURVG64_swm2KrUNwdbHaNslbQb4sIB22DjVEW3pcYSg",
                     "request-id": "members:5990846188234224:1617767695799",
@@ -717,21 +719,21 @@ class TestCaseMubu(HttpRunner):
                     "accept-language": "zh-CN,zh;q=0.9",
                 }
             )
-            .validate()
-            .assert_equal("status_code", 200)
-            .assert_equal("body.code", 0)
+                .validate()
+                .assert_equal("status_code", 200)
+                .assert_equal("body.code", 0)
         ),
         Step(
             RunRequest("/v3/api/colla/message")
-            .post("https://api2.mubu.com/v3/api/colla/message")
-            .with_headers(
+                .post("https://api2.mubu.com/v3/api/colla/message")
+                .with_headers(
                 **{
                     "content-length": "566",
                     "sec-ch-ua": '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
                     "sec-ch-ua-mobile": "?0",
                     "member-id": "5990846188234224",
                     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36",
-                    "data-unique-id": "2b7540fa-9d38-4f6f-9bae-9096fb781618",
+                    "data-unique-id": "$data_unique_id",
                     "content-type": "application/json;charset=UTF-8",
                     "accept": "application/json, text/plain, */*",
                     "jwt-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhcHAiOiJtdWJ1Iiwic3ViIjoiMTAyOTQwNDQiLCJleHAiOjE2MjAzNTk2NzYsImlhdCI6MTYxNzc2NzY3Nn0.7E5eqv6XD3V3h36PrmgrnE-rucSL9f43aoratwAlnkmURVG64_swm2KrUNwdbHaNslbQb4sIB22DjVEW3pcYSg",
@@ -747,7 +749,7 @@ class TestCaseMubu(HttpRunner):
                     "accept-language": "zh-CN,zh;q=0.9",
                 }
             )
-            .with_json(
+                .with_json(
                 {
                     "engineType": "MUBU",
                     "messageType": "BROADCAST",
@@ -788,20 +790,20 @@ class TestCaseMubu(HttpRunner):
                     },
                 }
             )
-            .validate()
-            .assert_equal("status_code", 200)
-            .assert_equal("body.code", 0)
+                .validate()
+                .assert_equal("status_code", 200)
+                .assert_equal("body.code", 0)
         ),
         Step(
             RunRequest("/v3/api/refer/search_refers")
-            .post("https://api2.mubu.com/v3/api/refer/search_refers")
-            .with_headers(
+                .post("https://api2.mubu.com/v3/api/refer/search_refers")
+                .with_headers(
                 **{
                     "content-length": "52",
                     "sec-ch-ua": '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
                     "sec-ch-ua-mobile": "?0",
                     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36",
-                    "data-unique-id": "2b7540fa-9d38-4f6f-9bae-9096fb781618",
+                    "data-unique-id": "$data_unique_id",
                     "content-type": "application/json;charset=UTF-8",
                     "accept": "application/json, text/plain, */*",
                     "jwt-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhcHAiOiJtdWJ1Iiwic3ViIjoiMTAyOTQwNDQiLCJleHAiOjE2MjAzNTk2NzYsImlhdCI6MTYxNzc2NzY3Nn0.7E5eqv6XD3V3h36PrmgrnE-rucSL9f43aoratwAlnkmURVG64_swm2KrUNwdbHaNslbQb4sIB22DjVEW3pcYSg",
@@ -815,22 +817,22 @@ class TestCaseMubu(HttpRunner):
                     "accept-language": "zh-CN,zh;q=0.9",
                 }
             )
-            .with_json({"docId": "$docId", "keywords": "title", "option": 1})
-            .validate()
-            .assert_equal("status_code", 200)
-            .assert_equal("body.code", 0)
+                .with_json({"docId": "$docId", "keywords": "title", "option": 1})
+                .validate()
+                .assert_equal("status_code", 200)
+                .assert_equal("body.code", 0)
         ),
         Step(
             RunRequest("/v3/api/colla/message")
-            .post("https://api2.mubu.com/v3/api/colla/message")
-            .with_headers(
+                .post("https://api2.mubu.com/v3/api/colla/message")
+                .with_headers(
                 **{
                     "content-length": "651",
                     "sec-ch-ua": '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
                     "sec-ch-ua-mobile": "?0",
                     "member-id": "5990846188234224",
                     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36",
-                    "data-unique-id": "2b7540fa-9d38-4f6f-9bae-9096fb781618",
+                    "data-unique-id": "$data_unique_id",
                     "content-type": "application/json;charset=UTF-8",
                     "accept": "application/json, text/plain, */*",
                     "jwt-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhcHAiOiJtdWJ1Iiwic3ViIjoiMTAyOTQwNDQiLCJleHAiOjE2MjAzNTk2NzYsImlhdCI6MTYxNzc2NzY3Nn0.7E5eqv6XD3V3h36PrmgrnE-rucSL9f43aoratwAlnkmURVG64_swm2KrUNwdbHaNslbQb4sIB22DjVEW3pcYSg",
@@ -846,7 +848,7 @@ class TestCaseMubu(HttpRunner):
                     "accept-language": "zh-CN,zh;q=0.9",
                 }
             )
-            .with_json(
+                .with_json(
                 {
                     "engineType": "MUBU",
                     "messageType": "BROADCAST",
@@ -904,21 +906,21 @@ class TestCaseMubu(HttpRunner):
                     },
                 }
             )
-            .validate()
-            .assert_equal("status_code", 200)
-            .assert_equal("body.code", 0)
+                .validate()
+                .assert_equal("status_code", 200)
+                .assert_equal("body.code", 0)
         ),
         Step(
             RunRequest("/v3/api/colla/message")
-            .post("https://api2.mubu.com/v3/api/colla/message")
-            .with_headers(
+                .post("https://api2.mubu.com/v3/api/colla/message")
+                .with_headers(
                 **{
                     "content-length": "515",
                     "sec-ch-ua": '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
                     "sec-ch-ua-mobile": "?0",
                     "member-id": "5990846188234224",
                     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36",
-                    "data-unique-id": "2b7540fa-9d38-4f6f-9bae-9096fb781618",
+                    "data-unique-id": "$data_unique_id",
                     "content-type": "application/json;charset=UTF-8",
                     "accept": "application/json, text/plain, */*",
                     "jwt-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhcHAiOiJtdWJ1Iiwic3ViIjoiMTAyOTQwNDQiLCJleHAiOjE2MjAzNTk2NzYsImlhdCI6MTYxNzc2NzY3Nn0.7E5eqv6XD3V3h36PrmgrnE-rucSL9f43aoratwAlnkmURVG64_swm2KrUNwdbHaNslbQb4sIB22DjVEW3pcYSg",
@@ -934,7 +936,7 @@ class TestCaseMubu(HttpRunner):
                     "accept-language": "zh-CN,zh;q=0.9",
                 }
             )
-            .with_json(
+                .with_json(
                 {
                     "engineType": "MUBU",
                     "messageType": "BROADCAST",
@@ -976,21 +978,21 @@ class TestCaseMubu(HttpRunner):
                     },
                 }
             )
-            .validate()
-            .assert_equal("status_code", 200)
-            .assert_equal("body.code", 0)
+                .validate()
+                .assert_equal("status_code", 200)
+                .assert_equal("body.code", 0)
         ),
         Step(
             RunRequest("/v3/api/colla/message")
-            .post("https://api2.mubu.com/v3/api/colla/message")
-            .with_headers(
+                .post("https://api2.mubu.com/v3/api/colla/message")
+                .with_headers(
                 **{
                     "content-length": "517",
                     "sec-ch-ua": '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
                     "sec-ch-ua-mobile": "?0",
                     "member-id": "5990846188234224",
                     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36",
-                    "data-unique-id": "2b7540fa-9d38-4f6f-9bae-9096fb781618",
+                    "data-unique-id": "$data_unique_id",
                     "content-type": "application/json;charset=UTF-8",
                     "accept": "application/json, text/plain, */*",
                     "jwt-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhcHAiOiJtdWJ1Iiwic3ViIjoiMTAyOTQwNDQiLCJleHAiOjE2MjAzNTk2NzYsImlhdCI6MTYxNzc2NzY3Nn0.7E5eqv6XD3V3h36PrmgrnE-rucSL9f43aoratwAlnkmURVG64_swm2KrUNwdbHaNslbQb4sIB22DjVEW3pcYSg",
@@ -1006,7 +1008,7 @@ class TestCaseMubu(HttpRunner):
                     "accept-language": "zh-CN,zh;q=0.9",
                 }
             )
-            .with_json(
+                .with_json(
                 {
                     "engineType": "MUBU",
                     "messageType": "BROADCAST",
@@ -1048,9 +1050,9 @@ class TestCaseMubu(HttpRunner):
                     },
                 }
             )
-            .validate()
-            .assert_equal("status_code", 200)
-            .assert_equal("body.code", 0)
+                .validate()
+                .assert_equal("status_code", 200)
+                .assert_equal("body.code", 0)
         ),
     ]
 
